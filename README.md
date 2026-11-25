@@ -1,41 +1,29 @@
 # ROS 2 Publisher and Subscriber
 
-A beginner ROS 2 project demonstrating inter-node communication using Publisher and Subscriber nodes in Python.
+A beginner-friendly ROS 2 project demonstrating publisher-subscriber communication using Python (`rclpy`).
 
-## Project Overview
+## Overview
 
-This project implements a simple communication system using ROS 2. A publisher node generates incrementing integer values and publishes them to a ROS 2 topic. A subscriber node receives these messages and displays them in the terminal.
+This project implements two ROS 2 nodes:
 
-## Architecture
+- **Publisher Node:** Generates and publishes integer values every second.
+- **Subscriber Node:** Subscribes to the published values and displays them in the terminal.
 
-The project consists of two ROS 2 nodes:
+Both nodes communicate through a ROS 2 topic named `number_topic`, using the `Int32` message type.
 
-**1. Publisher Node**
-- Node name: `publisher_node`
-- Generates incrementing integer values.
+## Project Architecture
 
-- Publishes messages every second.
-- Uses `std_msgs/msg/Int32`.
-
-**2. Subscriber Node**
-- Node name: `subscriber_node`
-- Subscribes to the publisher's topic.
-- Receives and displays incoming integer messages.
-
-## Communication Details
-
-| Parameter | Value |
-|---|---|
-| Topic | `number_topic` |
-| Message Type | `std_msgs/msg/Int32` |
-| Publishing Interval | 1 second |
-| QoS Queue Depth | 10 |
-| Language | Python |
+```mermaid
+flowchart LR
+    A["Publisher Node"] -->|"Int32 messages"| B["number_topic"]
+    B --> C["Subscriber Node"]
+    C --> D["Terminal Output"]
+```
 
 ## Technologies Used
 
 - ROS 2
-- Python
+- Python 3
 - rclpy
 - std_msgs
 - Ubuntu Linux
@@ -49,55 +37,83 @@ pub_sub_demo/
 │   ├── publisher.py
 │   └── subscriber.py
 ├── resource/
+│   └── pub_sub_demo
 ├── test/
 ├── package.xml
 ├── setup.py
 ├── setup.cfg
-├── .gitignore
-└── README.md
+├── README.md
+└── .gitignore
 ```
+
+## How It Works
+
+### 1. Publisher Node
+
+The publisher:
+- Creates a publisher using `rclpy`.
+- Publishes messages of type `std_msgs/Int32`.
+- Uses the topic `number_topic`.
+- Publishes a new integer every 1 second.
+- Increments the counter after each publication.
+
+### 2. Subscriber Node
+
+The subscriber:
+- Creates a subscription to `number_topic`.
+- Receives `Int32` messages.
+- Uses a callback function to process incoming messages.
+- Displays received values using the ROS 2 logger.
 
 ## Installation and Execution
 
-### 1. Clone the repository
+### Prerequisites
+
+- Ubuntu Linux
+- ROS 2 installed and sourced
+- Python 3
+- colcon build tools
+
+### Step 1: Clone the repository
 
 ```bash
 cd ~/ros2_ws/src
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/Pihukumari0821/ros2-publisher-subscriber.git
 ```
 
-### 2. Build the package
+### Step 2: Build the package
 
 ```bash
 cd ~/ros2_ws
+source /opt/ros/<ros_distro>/setup.bash
 colcon build --packages-select pub_sub_demo
 ```
 
-### 3. Source the workspace
+Replace `<ros_distro>` with your installed ROS 2 distribution.
 
-```bash
-source install/setup.bash
-```
-
-### 4. Run the publisher
-
-Open a terminal:
-
-```bash
-ros2 run pub_sub_demo publisher
-```
-
-### 5. Run the subscriber
-
-Open another terminal and source the workspace:
+### Step 3: Source the workspace
 
 ```bash
 source ~/ros2_ws/install/setup.bash
 ```
 
-Then execute:
+### Step 4: Run the publisher
+
+Open Terminal 1:
 
 ```bash
+source /opt/ros/<ros_distro>/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 run pub_sub_demo publisher
+```
+
+### Step 5: Run the subscriber
+
+Open Terminal 2:
+
+```bash
+source /opt/ros/<ros_distro>/setup.bash
+source ~/ros2_ws/install/setup.bash
 ros2 run pub_sub_demo subscriber
 ```
 
@@ -123,9 +139,17 @@ ros2 run pub_sub_demo subscriber
 
 ## Learning Outcomes
 
-- Understanding ROS 2 nodes.
-- Implementing Publisher and Subscriber communication.
+Through this project, I learned:
+
+- ROS 2 node creation using Python.
+- Publisher and subscriber communication.
 - Working with ROS 2 topics.
 - Using standard ROS 2 message types.
-- Implementing periodic publishing using timers.
-- Understanding basic ROS 2 Python package structure.
+- Implementing timer callbacks.
+- Building and running Python packages using colcon.
+
+## Author
+
+**Pihu Kumari**
+
+GitHub: https://github.com/Pihukumari0821
